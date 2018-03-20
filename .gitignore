@@ -1,5 +1,5 @@
 layout/dist/main.js
 node_modules/
 ./dist/
-
+.gitlab-ci.yml
 yarn-error.log
