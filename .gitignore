@@ -1,0 +1,6 @@
+layout/dist/main.js
+node_modules/
+./dist/**
+package-lock.json
+yarn.lock
+yarn-error.log

@@ -1,0 +1,48 @@
+{
+  "name": "Xenon",
+  "version": "1.0.3",
+  "description": "archive manager for some government stuff",
+  "main": "main.js",
+  "author": "Xenon Technologix",
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps",
+    "main:appsdebug": "electron main.js",
+    "layout:watch": "riot --watch --compact ./layout/src/ ./layout/dist/main.js",
+    "layout:build": "riot --compact ./layout/src/ ./layout/dist/main.js && uglifyjs --compress --mangle --output ./layout/dist/main.min.js -- ./layout/dist/main.js",
+    "build:pack": "electron-builder --dir",
+    "build:dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^1.8.3",
+    "electron-builder": "^20.5.1",
+    "electron-is-dev": "^0.3.0",
+    "elemon": "^5.0.3"
+  },
+  "dependencies": {
+    "electron-pdf-window": "^1.0.12",
+    "fs-extra": "^5.0.0",
+    "jquery": "^3.3.1",
+    "lokijs": "^1.5.3"
+  },
+  "homepage": "https://xenon/",
+  "build": {
+    "buildVersion": "0.0.3",
+    "appId": "xenon.technologix.id",
+    "files": [
+      "**/*",
+      "!layout/dist/main.js"
+    ],
+    "win": {
+      "certificateFile": "./build/xenon.pfx",
+      "certificatePassword": "xenon-technologix",
+      "publisherName": "Xenon Technologix",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true
+    }
+  }
+}
