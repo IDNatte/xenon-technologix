@@ -1,2 +1,6 @@
 language: node_js
 os: windows
+cache:
+  yarn: true
+  directories:
+    - node_modules
