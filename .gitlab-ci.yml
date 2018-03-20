@@ -1,0 +1,9 @@
+image: node:8
+
+before_script:
+  - yarn install
+
+build:
+  stage: build
+  script:
+    - yarn run layout:build
