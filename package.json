@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
+    "test": "yarn run build:dist",
     "main:appsdebug": "electron main.js",
     "layout:watch": "riot --watch --compact ./layout/src/ ./layout/dist/main.js",
     "layout:build": "riot --compact ./layout/src/ ./layout/dist/main.js && uglifyjs --compress --mangle --output ./layout/dist/main.min.js -- ./layout/dist/main.js",
