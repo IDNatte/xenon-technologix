@@ -12,7 +12,8 @@
     "layout:watch": "riot --watch --compact ./layout/src/ ./layout/dist/main.js",
     "layout:build": "riot --compact ./layout/src/ ./layout/dist/main.js && uglifyjs --compress --mangle --output ./layout/dist/main.min.js -- ./layout/dist/main.js",
     "build:pack": "electron-builder --dir",
-    "build:dist": "electron-builder"
+    "build:dist": "electron-builder",
+    "dist:publish": "build --win -p always"
   },
   "devDependencies": {
     "electron": "^1.8.3",
@@ -40,7 +41,8 @@
       "certificateFile": "./build/xenon.pfx",
       "certificatePassword": "xenon-technologix",
       "publisherName": "Xenon Technologix",
-      "target": "nsis"
+      "target": "nsis",
+      "publish": ["github"]
     },
     "nsis": {
       "oneClick": false,

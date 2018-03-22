@@ -4,3 +4,4 @@ dist/*
 layout/dist/main.js
 .gitlab-ci.yml
 yarn-error.log
+yarn.lock

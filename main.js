@@ -1,4 +1,5 @@
 const { dialog, ipcMain, app, BrowserWindow } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const pdfWindow = require('electron-pdf-window');
 
 // const isDev = require('electron-is-dev');
@@ -34,6 +35,9 @@ function createWindow () {
   win.on('closed', () => {
     win = null
   })
+
+
+  autoUpdater.checkForUpdatesAndNotify()
 }
 
 
