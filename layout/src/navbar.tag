@@ -2,6 +2,7 @@
   <nav class="cyan darken-2">
     <div class="nav-wrapper">
       <img class="brand-logo right" src="images/xenon-ico.png">
+      <updater></updater>
       <ul class="left">
         <li>
           <div class="input-field">

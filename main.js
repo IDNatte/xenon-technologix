@@ -2,7 +2,7 @@ const { dialog, ipcMain, app, BrowserWindow } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const pdfWindow = require('electron-pdf-window');
 
-// const isDev = require('electron-is-dev');
+const isDev = require('electron-is-dev');
 
 const exfs = require("fs-extra");
 const loki = require("lokijs");
@@ -14,6 +14,8 @@ let entryPoint = path.join(os.homedir(), 'Documents/xenon/datastore/') ;
 let col
 let win
 let db
+
+autoUpdater.logger = require("electron-log");
 
 function createWindow () {
   win = new BrowserWindow({
@@ -36,8 +38,6 @@ function createWindow () {
     win = null
   })
 
-
-  autoUpdater.checkForUpdatesAndNotify()
 }
 
 
@@ -51,23 +51,28 @@ function openPDF(path) {
   pmw.loadURL(path);
 }
 
+autoUpdater.on('checking-for-update', () => {
+  console.log('checking for update...');
+})
+
 app.on('ready', () => {
+  autoUpdater.checkForUpdates();
   createWindow();
 
   // elemon live reload for development mode
-  // if (isDev) {
-  //   const elemon = require('elemon');
-  //   elemon({
-  //     app: app,
-  //     mainFile: 'main.js',
-  //     bws: [
-  //       {
-  //         bw: win,
-  //         res: ['index.html', 'extra.css', 'main.js']
-  //       }
-  //     ]
-  //   })    
-  // }
+  if (isDev) {
+    const elemon = require('elemon');
+    elemon({
+      app: app,
+      mainFile: 'main.js',
+      bws: [
+        {
+          bw: win,
+          res: ['index.html', 'extra.css', 'main.js']
+        }
+      ]
+    })    
+  }
 })
   
 app.on('window-all-closed', () => {

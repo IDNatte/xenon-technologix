@@ -23,6 +23,7 @@
     "elemon": "^5.0.3"
   },
   "dependencies": {
+    "electron-log": "^2.2.14",
     "electron-pdf-window": "^1.0.12",
     "electron-updater": "^2.21.3",
     "fs-extra": "^5.0.0",
@@ -42,7 +43,9 @@
       "certificatePassword": "xenon-technologix",
       "publisherName": "Xenon Technologix",
       "target": "nsis",
-      "publish": ["github"]
+      "publish": [
+        "github"
+      ]
     },
     "nsis": {
       "oneClick": false,
