@@ -1,8 +1,8 @@
-const { dialog, ipcMain, app, BrowserWindow } = require('electron');
-const { autoUpdater } = require('electron-updater');
+const { dialog, ipcMain, app, BrowserWindow, webContents } = require('electron');
+const { autoUpdater, AppUpdater } = require('electron-updater');
 const pdfWindow = require('electron-pdf-window');
 
-const isDev = require('electron-is-dev');
+// const isDev = require('electron-is-dev');
 
 const exfs = require("fs-extra");
 const loki = require("lokijs");
@@ -15,9 +15,14 @@ let col
 let win
 let db
 
-autoUpdater.logger = require("electron-log");
+function updater() {
+  let updateControl = new AppUpdater()
+  updateControl.checkForUpdatesAndNotify()
+
+}
 
 function createWindow () {
+
   win = new BrowserWindow({
     width: 1280,
     height: 680,
@@ -38,8 +43,9 @@ function createWindow () {
     win = null
   })
 
-}
+  updater();
 
+}
 
 function openPDF(path) {
   const pmw = new pdfWindow({
@@ -51,28 +57,23 @@ function openPDF(path) {
   pmw.loadURL(path);
 }
 
-autoUpdater.on('checking-for-update', () => {
-  console.log('checking for update...');
-})
-
-app.on('ready', () => {
-  autoUpdater.checkForUpdates();
+app.on('ready', () => {  
   createWindow();
 
   // elemon live reload for development mode
-  if (isDev) {
-    const elemon = require('elemon');
-    elemon({
-      app: app,
-      mainFile: 'main.js',
-      bws: [
-        {
-          bw: win,
-          res: ['index.html', 'extra.css', 'main.js']
-        }
-      ]
-    })    
-  }
+  // if (isDev) {
+  //   const elemon = require('elemon');
+  //   elemon({
+  //     app: app,
+  //     mainFile: 'main.js',
+  //     bws: [
+  //       {
+  //         bw: win,
+  //         res: ['index.html', 'extra.css', 'main.js']
+  //       }
+  //     ]
+  //   })    
+  // }
 })
   
 app.on('window-all-closed', () => {
