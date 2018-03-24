@@ -35,21 +35,6 @@ function createWindow () {
   exfs.ensureDirSync(path.join(entryPoint, 'attachment/'));
 
   autoUpdater.checkForUpdatesAndNotify();
-  autoUpdater.on('update-available', () => {
-    dialog.showMessageBox({
-      type: 'info',
-      title: 'New Update Available',
-      message: `New Update Is Available`,
-      buttons: [
-        'Download Update',
-        'Later Please'
-      ]
-    }, (response) => {
-      if (response === 0) {
-        autoUpdater.downloadUpdate();
-      }
-    })
-  })
 }
 
 function openPDF(path) {
