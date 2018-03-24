@@ -8,7 +8,7 @@
         </div>
         <div class="card-stacked">
           <div class="card-content">
-            <span class="card-title">Xenon Archive</span>
+            <div class="card-title">Xenon Archive</div>
             <p>
               <table class="striped responsive-table">
                 <tbody>

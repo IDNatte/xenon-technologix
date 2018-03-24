@@ -1,13 +1,12 @@
 {
   "name": "Xenon",
-  "version": "1.0.5",
+  "version": "1.0.22",
   "description": "archive manager for some government stuff",
   "main": "main.js",
   "author": "Xenon Technologix",
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "test": "yarn run build:dist",
     "main:appsdebug": "electron main.js",
     "layout:watch": "riot --watch --compact ./layout/src/ ./layout/dist/main.js",
     "layout:build": "riot --compact ./layout/src/ ./layout/dist/main.js && uglifyjs --compress --mangle --output ./layout/dist/main.min.js -- ./layout/dist/main.js",
@@ -18,39 +17,39 @@
   "devDependencies": {
     "electron": "^1.8.3",
     "electron-builder": "^20.5.1",
-    "electron-builder-squirrel-windows": "^20.7.0",
     "electron-is-dev": "^0.3.0",
     "elemon": "^5.0.3"
   },
   "dependencies": {
-    "electron-log": "^2.2.14",
     "electron-pdf-window": "^1.0.12",
     "electron-updater": "^2.21.3",
     "fs-extra": "^5.0.0",
     "jquery": "^3.3.1",
-    "lokijs": "^1.5.3"
+    "lokijs": "^1.5.3",
+    "node-notifier": "^5.2.1"
   },
   "homepage": "https://github.com/IDNatte/xenon-technologix",
   "build": {
     "buildVersion": "0.0.3",
     "appId": "xenon.technologix.id",
+    "publish": [
+      "github"
+    ],
     "files": [
       "**/*",
       "!layout/dist/main.js"
     ],
+    "extraResources": [
+      "./icon.png"
+    ],
     "win": {
-      "certificateFile": "./build/xenon.pfx",
-      "certificatePassword": "xenon-technologix",
       "publisherName": "Xenon Technologix",
-      "target": "nsis",
-      "publish": [
-        "github"
-      ]
+      "target": "nsis"
     },
     "nsis": {
       "oneClick": false,
       "allowElevation": true,
-      "allowToChangeInstallationDirectory": true
+      "perMachine": true
     }
   }
 }

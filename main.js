@@ -1,9 +1,6 @@
 const { dialog, ipcMain, app, BrowserWindow, webContents } = require('electron');
-const { autoUpdater, AppUpdater } = require('electron-updater');
+const { autoUpdater } = require('electron-updater');
 const pdfWindow = require('electron-pdf-window');
-
-// const isDev = require('electron-is-dev');
-
 const exfs = require("fs-extra");
 const loki = require("lokijs");
 const path = require('path');
@@ -14,12 +11,6 @@ let entryPoint = path.join(os.homedir(), 'Documents/xenon/datastore/') ;
 let col
 let win
 let db
-
-function updater() {
-  let updateControl = new AppUpdater()
-  updateControl.checkForUpdatesAndNotify()
-
-}
 
 function createWindow () {
 
@@ -35,16 +26,30 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }))
-
-  exfs.ensureDirSync(entryPoint);
-  exfs.ensureDirSync(path.join(entryPoint, 'attachment/'));
   
   win.on('closed', () => {
     win = null
   })
 
-  updater();
+  exfs.ensureDirSync(entryPoint);
+  exfs.ensureDirSync(path.join(entryPoint, 'attachment/'));
 
+  autoUpdater.checkForUpdatesAndNotify();
+  autoUpdater.on('update-available', () => {
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'New Update Available',
+      message: `New Update Is Available`,
+      buttons: [
+        'Download Update',
+        'Later Please'
+      ]
+    }, (response) => {
+      if (response === 0) {
+        autoUpdater.downloadUpdate();
+      }
+    })
+  })
 }
 
 function openPDF(path) {
@@ -57,23 +62,8 @@ function openPDF(path) {
   pmw.loadURL(path);
 }
 
-app.on('ready', () => {  
+app.on('ready', () => {
   createWindow();
-
-  // elemon live reload for development mode
-  // if (isDev) {
-  //   const elemon = require('elemon');
-  //   elemon({
-  //     app: app,
-  //     mainFile: 'main.js',
-  //     bws: [
-  //       {
-  //         bw: win,
-  //         res: ['index.html', 'extra.css', 'main.js']
-  //       }
-  //     ]
-  //   })    
-  // }
 })
   
 app.on('window-all-closed', () => {
