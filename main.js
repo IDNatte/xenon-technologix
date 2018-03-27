@@ -35,6 +35,7 @@ function createWindow () {
   exfs.ensureDirSync(path.join(entryPoint, 'attachment/'));
 
   autoUpdater.checkForUpdatesAndNotify();
+
 }
 
 function openPDF(path) {
@@ -159,6 +160,27 @@ ipcMain.on('save-Data', (event, args) => {
       event.sender.send('sd-Replay', {status : 'error'});
     }
   })
+})
+
+ipcMain.on('req-about', (event, args) => {
+
+  let about = new BrowserWindow({
+    parent: win,
+    modal: true,
+    maximizable: false,
+    width: 400,
+    height: 430,
+    show: false,
+    frame: false,
+  })
+
+  about.loadURL(url.format({
+    pathname: path.join(__dirname, 'layout/about.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+
+  about.show()
 })
 
 app.on('activate', () => {

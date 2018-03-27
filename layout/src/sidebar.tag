@@ -25,11 +25,22 @@
       </a>
     </li>
     <li>
-      <a href="#about" class="close-side waves-effect">
+      <a href="#about" class="close-side waves-effect" onclick={ about }>
         <i class="material-icons">info_outline</i>
         <span>About</span>
       </a>
     </li>
   </ul>
+
+  <script>
+    // opening about windows
+
+    var ipcRenderer = require('electron').ipcRenderer;
+
+    about() {
+      ipcRenderer.send('req-about');
+    }
+
+  </script>
 
 </sidebar>

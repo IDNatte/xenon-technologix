@@ -2,7 +2,6 @@
   <router>
     <route path=""><archive-list></archive-list></route>
     <route path="new-archive"><create-archive></create-archive></route>
-    <route path="about"><about-component></about-component></route>
   </router>
 
   <script>

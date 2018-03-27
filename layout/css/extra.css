@@ -15,8 +15,6 @@ header, main{
   background-size: 400% 400%;
 }
 
-
-
 @keyframes Gradient {
 	0% {
 		background-position: 0% 50%
