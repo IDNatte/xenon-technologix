@@ -25,6 +25,12 @@
       </a>
     </li>
     <li>
+      <a href="#user-setting" class="close-side waves-effect">
+        <i class="material-icons">build</i>
+        <span>Setting</span>
+      </a>
+    </li>
+    <li>
       <a href="#about" class="close-side waves-effect" onclick={ about }>
         <i class="material-icons">info_outline</i>
         <span>About</span>

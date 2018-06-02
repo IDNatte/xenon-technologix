@@ -1,17 +1,21 @@
 const { dialog, ipcMain, app, BrowserWindow, webContents } = require('electron');
 const { autoUpdater } = require('electron-updater');
-const pdfWindow = require('electron-pdf-window');
 const exfs = require("fs-extra");
 const loki = require("lokijs");
 const path = require('path');
 const url = require('url');
 const os = require('os');
 
-let entryPoint = path.join(os.homedir(), 'Documents/xenon/datastore/') ;
+const RCMenu = require('electron').Menu;
+const RCMenuItem = require('electron').MenuItem;
+
+let entryPoint = path.join(os.homedir(), 'Documents/Xenon/datastore/') ;
+let about
 let col
 let win
 let db
 
+// function for main windows stuff
 function createWindow () {
 
   win = new BrowserWindow({
@@ -30,34 +34,46 @@ function createWindow () {
   win.on('closed', () => {
     win = null
   })
-
-  exfs.ensureDirSync(entryPoint);
-  exfs.ensureDirSync(path.join(entryPoint, 'attachment/'));
-
-  autoUpdater.checkForUpdatesAndNotify();
-
 }
 
 function openPDF(path) {
-  const pmw = new pdfWindow({
+  const pmw = new BrowserWindow({
     parent: win,
     modal: true,
-    alwaysOnTop: true
+    maximizable: false,
+    width: 800,
+    height: 450,
+    webPreferences: {
+      plugins: true
+    }
   })
 
   pmw.loadURL(path);
 }
 
-app.on('ready', () => {
-  createWindow();
-})
-  
+
+// main application listener stuff
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
+app.on('ready', () => {
+  createWindow();
+
+  exfs.ensureDirSync(entryPoint);
+  exfs.ensureDirSync(path.join(entryPoint, 'attachment/'));
+
+})
+
+app.on('activate', () => {
+  if (win === null) {
+    createWindow()
+  }
+})
+
+// renderer listener stuff
 ipcMain.on('load-Storage', (event, args) => {
 
   let mountStat = args.status;
@@ -164,7 +180,7 @@ ipcMain.on('save-Data', (event, args) => {
 
 ipcMain.on('req-about', (event, args) => {
 
-  let about = new BrowserWindow({
+  about = new BrowserWindow({
     parent: win,
     modal: true,
     maximizable: false,
@@ -180,11 +196,42 @@ ipcMain.on('req-about', (event, args) => {
     slashes: true
   }))
 
-  about.show()
+  about.on('ready-to-show', () => {
+    about.show()
+  })
+
+  about.on('close', () => {
+    about = null
+  })
+
 })
 
-app.on('activate', () => {
-  if (win === null) {
-    createWindow()
-  }
+ipcMain.on('update-op', (event, args) => {
+  // autoUpdater.checkForUpdates()
+  autoUpdater.checkForUpdates()
+  // console.log('re-calling update event...')
+})
+
+
+// autoupdater listener stuff
+autoUpdater.on('error', () => {
+  about.webContents.send('upreslt', {status: 'error', message: 'Update error'});      
+})
+
+autoUpdater.on('checking-for-update', () => {
+  about.webContents.send('upreslt', {status: 'updating', message: 'Checking update...'})
+})
+
+autoUpdater.on('download-progress', (progress) => {
+  let fixedPercent = parseFloat(progress.percent).toFixed(1);
+  about.webContents.send('upreslt', {status: 'downloading', message: `Downloading Update... ${fixedPercent}%`})
+})
+
+autoUpdater.on('update-downloaded', () => {
+  about.webContents.send('upreslt', {status: 'installing', message: `Installing Update...`})
+  autoUpdater.quitAndInstall(true, true);
+})
+
+autoUpdater.on('update-not-available', () => {
+  about.webContents.send('upreslt', {status: 'noupdate', message: 'Latest Version'})
 })

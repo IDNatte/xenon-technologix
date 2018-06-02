@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>About</title>
+
 </head>
 <style>
   @font-face {
@@ -100,13 +101,30 @@
     border-radius: 2.5px;
   }
 
+  .loading {
+    -webkit-animation: rotation 2s infinite linear;
+  }
+
+  .upstat {
+    padding: 0 20px;
+  }
+
+  @-webkit-keyframes rotation {
+    from {
+      -webkit-transform: rotate(0deg);
+    }to {
+      -webkit-transform: rotate(-359deg);
+    }
+  }
+
 </style>
 <body>
   <div class="wrapper">
     <div class="image-header">
       <div class="image-wrapper">
-        <img class="limage" src="images/icon-white.png">
+        <img class="limage loader" src="images/icon-white.png">
       </div>
+      <span class="upstat"></span>
     </div>
     <div class="information">
       <div class="title">
@@ -137,6 +155,8 @@
 
 <script>
   var electron = require('electron');
+  var renderer = electron.ipcRenderer;
+
   var ver = document.querySelector('.version');
   var nver = document.querySelector('.node-vers');
   var cver = document.querySelector('.ch-vers');
@@ -154,6 +174,38 @@
     var t = electron.remote.getCurrentWindow();
     t.close();
   }
+
+  function addClass(ele,cls) {  
+    if (!hasClass(ele,cls)) ele.className += " "+cls;
+  }
+  
+  function removeClass(ele,cls) {
+    if (hasClass(ele,cls)) {      
+      var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)'); 
+      ele.className=ele.className.replace(reg,' ');  
+    }
+  }
+
+  function hasClass(ele,cls) {
+    return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // triggering update
+    renderer.send('update-op');
+    renderer.on('upreslt', function(event, args) {
+      var stat = document.querySelector('.upstat');
+      var loader = document.querySelector('.loader');
+      addClass(loader, 'loading');
+      stat.innerHTML = args.message;
+
+      if (args.status === 'noupdate') {
+        removeClass(loader, 'loading');
+      }else if (args.status === 'error') {
+        removeClass(loader, 'loading');
+      }
+    })
+  })
 </script>
 
 </html>
