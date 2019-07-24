@@ -7,8 +7,8 @@
           <img class="responsive-img" src="images/sidenbg.jpg">
         </div>
         <img class="circle" src="images/user.png">
-        <span class="white-text name">Good Morning Sir</span>
-        <span class="white-text email">asd</span>
+        <span class="white-text name">Good Day Sir</span>
+        <span class="white-text email">Life without word equal dying</span>
       </div>
     </li>
 
@@ -24,12 +24,7 @@
         <span>Create New Archive</span>
       </a>
     </li>
-    <li>
-      <a href="#user-setting" class="close-side waves-effect">
-        <i class="material-icons">build</i>
-        <span>Setting</span>
-      </a>
-    </li>
+
     <li>
       <a href="#about" class="close-side waves-effect" onclick={ about }>
         <i class="material-icons">info_outline</i>

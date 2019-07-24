@@ -4,53 +4,44 @@
     
     <div class="col s12">
 
-      <ul class="collapsible">
-        <li each={ data }>
-          <div class="collapsible-header">
-            <i class="material-icons">insert_drive_file</i>
-            { archiveSub }
-          </div>
-          <div class="collapsible-body">
+      <table class="striped centered responsive-table">
+        <thead>
+          <tr>
+              <th>Document Date</th>
+              <th>Sended Date</th>
+              <th>Document Number</th>
+              <th>Issued Number</th>
+              <th>Document Subject</th>
+              <th>Recipment</th>
+              <th>Attachment</th>
+          </tr>
+        </thead>
 
-            <div>
-              <span>Recipment : </span>
+        <tbody>
+          <tr each={ data }>
+            <td>{ documentDate }</td>
+            <td>{ sendedDate }</td>
+            <td>{ docNumber }</td>
+            <td>{ issuedDocNumber }</td>
+            <td>{ archiveSub }</td>
+            <td>
               <recipment each={ value, name  in recipient }>
-                { value }
+                <div class="chip">
+                  { value }
+                </div>
               </recipment>
-            </div>
-
-            <div>
-              <span>Document Date : { documentDate }</span>
-            </div>
-
-            <div>
-              <span>Accepted Date : { acceptedDate }</span>
-            </div>
-
-            <div>
-              <span>Document Number : { docNumber }</span>
-            </div>
-
-            <div>
-              <span>Issued Number : { issuedDocNumber }</span>
-            </div>
-
-            <div>
-              <span>Archive Descirption : { archiveSub }</span>
-            </div>
-
-            <div class="footer">
-              <a class="waves-effect waves-red btn-flat" href="#print-doc">Print</a>
-              <a class="waves-effect waves-red btn-flat" onclick={ openPDFfile.bind(this, archiveAttachment.path) }>See Attachment file</a>
-            </div>
-
-          </div>
-        </li>
-      </ul>
+            </td>
+            <td>
+              <a class="waves-effect waves-dark btn-flat" onclick={ openPDFfile.bind(this, archiveAttachment.path) }>
+                <i class="material-icons">visibility</i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
     </div>
   </div>
-
 
   <script>
 
@@ -59,11 +50,7 @@
     this.on('mount', function() {
       var d = ipcRenderer.sendSync('get-data');
       this.update({data : d});
-      
-      $('.collapsible').collapsible();
     })
-
-
 
     sharedObservable.on('search-res', function(args) {
       this.update({data: args.result});

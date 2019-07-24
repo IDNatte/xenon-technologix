@@ -7,25 +7,25 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "main:appsdebug": "electron main.js",
-    "layout:watch": "riot --watch --compact ./layout/src/ ./layout/dist/main.js",
-    "layout:build": "riot --compact ./layout/src/ ./layout/dist/main.js && uglifyjs --compress --mangle --output ./layout/dist/main.min.js -- ./layout/dist/main.js",
+    "main:appsdebug": "./node_modules/.bin/electron ./main.js",
+    "layout:watch": "riot --watch --compact ./layout/src/ ./layout/dist/main.riot.js",
+    "layout:build": "riot --compact ./layout/src/ ./layout/dist/main.js && uglifyjs --compress --mangle --output ./layout/dist/main.min.js -- ./layout/dist/main.min.js",
     "build:pack": "electron-builder --dir",
     "build:dist": "electron-builder",
     "dist:publish": "build --win -p always"
   },
   "devDependencies": {
-    "electron": "^1.8.3",
-    "electron-builder": "^20.5.1",
-    "electron-is-dev": "^0.3.0",
+    "electron": "^5.0.8",
+    "electron-builder": "^21.1.1",
+    "electron-is-dev": "^1.1.0",
     "elemon": "^5.0.3"
   },
   "dependencies": {
-    "electron-updater": "^2.21.3",
-    "first-run": "^1.2.0",
-    "fs-extra": "^5.0.0",
-    "jquery": "^3.3.1",
-    "lokijs": "^1.5.3"
+    "electron-updater": "^4.1.2",
+    "first-run": "^2.0.0",
+    "fs-extra": "^8.1.0",
+    "jquery": "^3.4.1",
+    "lokijs": "^1.5.7"
   },
   "homepage": "https://github.com/IDNatte/xenon-technologix",
   "build": {
